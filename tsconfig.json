@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+
+    // Turn off strict type checking:
+    "strict": false,
+
+    // Simplify ES Module imports/exports:
+    "esModuleInterop": true,
+
+    // Skip checking .d.ts files in node_modules:
+    "skipLibCheck": true
+  },
+  // Include your source directory
+  "include": ["src"]
+}
