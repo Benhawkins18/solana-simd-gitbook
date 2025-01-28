@@ -1,6 +1,20 @@
 # Summary
 * [SIMDs Overview](README.md)
 ## Accepted SIMDs
+  * Activated
+    * [SIMD-0033 - Timely Vote Credits](accepted/Activated/SIMD-0033.md)
+    * [SIMD-0085 - Additional Fee-Collector Constraints](accepted/Activated/SIMD-0085.md)
+    * [SIMD-0093 - Disable Bpf loader V2 program deployment](accepted/Activated/SIMD-0093.md)
+    * [SIMD-0129 - Alt_BN128 Syscalls - Simplified Error Code](accepted/Activated/SIMD-0129.md)
+  * Implemented
+    * [SIMD-0046 - Optimistic cluster restart automation](accepted/Implemented/SIMD-0046.md)
+    * [SIMD-0047 - Syscall and Sysvar for last restart slot](accepted/Implemented/SIMD-0047.md)
+    * [SIMD-0049 - Syscall for remaining compute units](accepted/Implemented/SIMD-0049.md)
+    * [SIMD-0079 - Allow Commission Decrease at Any Time](accepted/Implemented/SIMD-0079.md)
+    * [SIMD-0084 - Disable rent fees collection](accepted/Implemented/SIMD-0084.md)
+    * [SIMD-0096 - Reward full priority fee to validator](accepted/Implemented/SIMD-0096.md)
+    * [SIMD-0133 - Syscall Get-Epoch-Stake](accepted/Implemented/SIMD-0133.md)
+    * [SIMD-0148 - MoveStake and MoveLamports Instructions](accepted/Implemented/SIMD-0148.md)
   * Accepted
     * [SIMD-0009 - Lockout Violation Detection](accepted/Accepted/SIMD-0009.md)
     * [SIMD-0022 - Multi Delegation Stake Account](accepted/Accepted/SIMD-0022.md)
@@ -25,25 +39,14 @@
     * [SIMD-0207 - Raise Block Limits to 50M CUs](accepted/Accepted/SIMD-0207.md)
     * [SIMD-0215 - Homomorphic Hashing of Account State](accepted/Accepted/SIMD-0215.md)
     * [SIMD-0223 - Removes Accounts Delta Hash](accepted/Accepted/SIMD-0223.md)
-  * Activated
-    * [SIMD-0033 - Timely Vote Credits](accepted/Activated/SIMD-0033.md)
-    * [SIMD-0085 - Additional Fee-Collector Constraints](accepted/Activated/SIMD-0085.md)
-    * [SIMD-0093 - Disable Bpf loader V2 program deployment](accepted/Activated/SIMD-0093.md)
-    * [SIMD-0129 - Alt_BN128 Syscalls - Simplified Error Code](accepted/Activated/SIMD-0129.md)
-  * Draft
-    * [SIMD-0159 - Relax Precompile Failure Constraint](accepted/Draft/SIMD-0159.md)
-  * Implemented
-    * [SIMD-0046 - Optimistic cluster restart automation](accepted/Implemented/SIMD-0046.md)
-    * [SIMD-0047 - Syscall and Sysvar for last restart slot](accepted/Implemented/SIMD-0047.md)
-    * [SIMD-0049 - Syscall for remaining compute units](accepted/Implemented/SIMD-0049.md)
-    * [SIMD-0079 - Allow Commission Decrease at Any Time](accepted/Implemented/SIMD-0079.md)
-    * [SIMD-0084 - Disable rent fees collection](accepted/Implemented/SIMD-0084.md)
-    * [SIMD-0096 - Reward full priority fee to validator](accepted/Implemented/SIMD-0096.md)
-    * [SIMD-0133 - Syscall Get-Epoch-Stake](accepted/Implemented/SIMD-0133.md)
-    * [SIMD-0148 - MoveStake and MoveLamports Instructions](accepted/Implemented/SIMD-0148.md)
   * Living
     * [SIMD-0001 - Solana Proposal Process](accepted/Living/SIMD-0001.md)
     * [SIMD-0007 - SIMD Access Policy](accepted/Living/SIMD-0007.md)
+  * Stagnant
+    * [SIMD-0064 - Transaction Receipts](accepted/Stagnant/SIMD-0064.md)
+  * Withdrawn
+    * [SIMD-0015 - Partitioned Epoch Rewards Distribution](accepted/Withdrawn/SIMD-0015.md)
+    * [SIMD-0048 - Native Program for verifying secp256r1 sig.](accepted/Withdrawn/SIMD-0048.md)
   * Review
     * [SIMD-0170 - Reserve minimal CUs for builtins](accepted/Review/SIMD-0170.md)
     * [SIMD-0182 - Consume requested CUs for sBPF failures](accepted/Review/SIMD-0182.md)
@@ -51,11 +54,8 @@
     * [SIMD-0196 - Migrate Stake to Core BPF](accepted/Review/SIMD-0196.md)
     * [SIMD-0220 - Snapshots use Accounts Lattice Hash](accepted/Review/SIMD-0220.md)
     * [SIMD-0222 - Fix alt-bn128 multiplication syscall length](accepted/Review/SIMD-0222.md)
-  * Stagnant
-    * [SIMD-0064 - Transaction Receipts](accepted/Stagnant/SIMD-0064.md)
-  * Withdrawn
-    * [SIMD-0015 - Partitioned Epoch Rewards Distribution](accepted/Withdrawn/SIMD-0015.md)
-    * [SIMD-0048 - Native Program for verifying secp256r1 sig.](accepted/Withdrawn/SIMD-0048.md)
+  * Draft
+    * [SIMD-0159 - Relax Precompile Failure Constraint](accepted/Draft/SIMD-0159.md)
 ## Proposed SIMDs
   * [SIMD-0057 - Events](proposed/SIMD-0057-PR57.md)
   * [SIMD-0072 - Feature Gate Threshold Automation](proposed/SIMD-0072-PR72.md)

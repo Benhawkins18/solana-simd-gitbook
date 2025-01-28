@@ -42,6 +42,18 @@ const CLONE_DIR = path.resolve("local-simd-repo");
 const PROPOSALS_DIR = "proposals";
 const OUTPUT_DIR = path.resolve("docs"); // final GitBook docs output
 
+// Custom sort order for statuses:
+const CUSTOM_STATUS_ORDER = [
+  "Activated",
+  "Implemented",
+  "Accepted",
+  "Living",
+  "Stagnant",
+  "Withdrawn",
+  "Review",
+  "Draft",
+];
+
 // Use an environment variable for GitHub token (recommended) or hardcode for demo
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
 
@@ -223,20 +235,12 @@ Navigate via the left sidebar or the sections below.
     await fs.mkdir(statusFolder);
 
     for (const simd of simds) {
-      // Try to infer the original filename from the content or path if needed
-      // but let's assume we do it by matching the simd # with the original file
       const simdNum = simd.metadata.simd || "XXXX";
       const simdFilename = `SIMD-${simdNum}.md`;
       const fullPath = path.join(statusFolder, simdFilename);
 
       // Build GitHub link for the main-branch proposal file
-      // Usually we can't 100% guarantee the original .md name from just the simdNum,
-      // but if your simdNum matches the filename, this works well. 
-      // If your local parse had the EXACT original relative path, use that.
       const mainBranchUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/main/proposals/${simdNum}-anything.md`;
-
-      // If you want a guaranteed approach, store the relative file path earlier,
-      // or parse it from the local read path. We'll do a naive approach here:
       simd.metadata.githubLink = mainBranchUrl;
 
       // Now embed the link in front matter
@@ -249,26 +253,23 @@ Navigate via the left sidebar or the sections below.
   const proposedRoot = path.join(OUTPUT_DIR, "proposed");
   await fs.mkdir(proposedRoot);
 
-  // Instead of subdividing by PR, let's just store them all directly in proposed/
-  // We'll create a single array that is sorted by simdNum to produce a tidy listing.
+  // Flatten proposed: single array, sorted by simdNum
   const allProposedSorted = proposedSimds.slice().sort((a, b) => {
     const aNum = parseInt(a.metadata.simd || "999999", 10);
     const bNum = parseInt(b.metadata.simd || "999999", 10);
     return aNum - bNum;
   });
 
-  // Write each proposed SIMD as a single file in proposed/
+  // Write each proposed SIMD
   for (const simd of allProposedSorted) {
     const simdNum = simd.metadata.simd || "PR";
     const simdTitle = simd.metadata.title || "";
-    // We'll incorporate the PR number into the filename to avoid collisions
     const simdFilename = `SIMD-${simdNum}-PR${simd.prNumber}.md`;
     const fullPath = path.join(proposedRoot, simdFilename);
 
     // Add a 'githubLink' that points to the PR
     simd.metadata.githubLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${simd.prNumber}`;
 
-    // Write with front matter again
     const frontMatter = matter.stringify(simd.content, simd.metadata);
     await fs.writeFile(fullPath, frontMatter, "utf-8");
   }
@@ -280,8 +281,17 @@ Navigate via the left sidebar or the sections below.
     "## Accepted SIMDs",
   ];
 
-  // Sort statuses for a stable reading order
-  const sortedStatuses = Object.keys(acceptedByStatus).sort();
+  // Custom sort of statuses using our CUSTOM_STATUS_ORDER
+  const sortedStatuses = Object.keys(acceptedByStatus).sort((a, b) => {
+    const indexA = CUSTOM_STATUS_ORDER.indexOf(a);
+    const indexB = CUSTOM_STATUS_ORDER.indexOf(b);
+    // If not found in the array, push to the end
+    const rankA = indexA === -1 ? 9999 : indexA;
+    const rankB = indexB === -1 ? 9999 : indexB;
+    return rankA - rankB;
+  });
+
+  // Now iterate in that custom order
   for (const status of sortedStatuses) {
     summaryLines.push(`  * ${status}`);
     const simds = acceptedByStatus[status];
@@ -301,13 +311,12 @@ Navigate via the left sidebar or the sections below.
     }
   }
 
-  // Proposed SIMDs: just one flat list
+  // Proposed SIMDs: single list
   summaryLines.push("## Proposed SIMDs");
   for (const simd of allProposedSorted) {
     const simdNum = simd.metadata.simd || "PR";
     const simdTitle = simd.metadata.title || "";
     const prNumber = simd.prNumber;
-    // Filename references the single folder: proposed/SIMD-<simdNum>-PR<prNumber>.md
     summaryLines.push(
       `  * [SIMD-${simdNum} - ${simdTitle}](proposed/SIMD-${simdNum}-PR${prNumber}.md)`
     );
