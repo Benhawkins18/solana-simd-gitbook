@@ -220,7 +220,7 @@ Navigate via the left sidebar or the sections below.
     mainReadme = simd1.content;
   } else {
     console.warn(
-      "SIMD-1 not found among accepted SIMDs. Falling back to the default main README content."
+      "SIMD-0001 not found among accepted SIMDs. Falling back to the default main README content."
     );
   }
 
@@ -254,8 +254,15 @@ Navigate via the left sidebar or the sections below.
       const simdFilename = `SIMD-${simdNum}.md`;
       const fullPath = path.join(statusFolder, simdFilename);
 
+      // IMPORTANT: Derive the real file name from the proposals directory
+      // so we don't accidentally create a link like "0009-anything.md".
+      // In other words, find the original file from the acceptedSimdFiles array:
+      // We'll store the baseName so we can create the correct link on GitHub.
+      // (Alternatively, you could store this in parseSimdMarkdown, but here is a simple approach.)
+      const originalMdFileName = findOriginalFileName(simdNum);
+
       // Build GitHub link for the main-branch proposal file
-      const mainBranchUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/main/proposals/${simdNum}-anything.md`;
+      const mainBranchUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/main/proposals/${originalMdFileName}`;
       simd.metadata.githubLink = mainBranchUrl;
 
       // Insert a link at the top of the file's content
@@ -349,6 +356,29 @@ Navigate via the left sidebar or the sections below.
   await fs.writeFile(path.join(OUTPUT_DIR, "SUMMARY.md"), summaryContent, "utf-8");
 
   console.log(`GitBook structure has been built in ${OUTPUT_DIR}/`);
+}
+
+/**
+ * Finds the original file name (e.g. "0009-lockout-violation-detection.md")
+ * by searching in the local proposals directory for a file whose numeric prefix
+ * matches the SIMD number from front matter.
+ */
+function findOriginalFileName(simdNumber: string): string {
+  // For example, if `simdNumber` is '0009', we look for a file that starts with '0009-'
+  // or exactly "0009.md" (some SIMDs might not follow the dash naming convention).
+  const proposalsPath = path.join(CLONE_DIR, PROPOSALS_DIR);
+  const files = fs.readdirSync(proposalsPath);
+
+  // Match either "0009-" or "0009.md" (some edge-case might be "0009-whatever.md").
+  // This ensures we pick up the actual file name instead of forcing "-anything.md".
+  const pattern = new RegExp(`^${simdNumber}(?:-|\\.)`);
+  const matched = files.find((f) => f.match(pattern));
+  if (!matched) {
+    // fallback in case we can't find something
+    // use a default pattern
+    return `${simdNumber}-proposal.md`;
+  }
+  return matched;
 }
 
 // ----------------------
