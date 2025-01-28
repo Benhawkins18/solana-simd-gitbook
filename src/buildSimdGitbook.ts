@@ -213,8 +213,7 @@ This site is auto-generated to display:
 
 Navigate via the left sidebar or the sections below.
 `;
-
-  const simd1 = acceptedSimds.find((s) => s.metadata.simd === "1");
+  const simd1 = acceptedSimds.find((s) => s.metadata.simd === "0001");
   if (simd1) {
     console.log("Using SIMD-1 content as the main README...");
     // We only use the Markdown body (ignoring the front matter from SIMD-1)
