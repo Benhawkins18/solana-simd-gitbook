@@ -1,5 +1,5 @@
 # Solana Improvement Documents (SIMDs)
-  
+
 This site is auto-generated to display:
 
 - **Accepted SIMDs** (on `main` branch)

@@ -201,9 +201,11 @@ async function buildGitBookStructure(
   }
   await fs.mkdir(OUTPUT_DIR);
 
-  // Create a main README.md in docs/
-  const mainReadme = `# Solana Improvement Documents (SIMDs)
-  
+  // ----------------
+  // Use SIMD-1 as the mainReadme if available
+  // ----------------
+  let mainReadme = `# Solana Improvement Documents (SIMDs)
+
 This site is auto-generated to display:
 
 - **Accepted SIMDs** (on \`main\` branch)
@@ -211,6 +213,19 @@ This site is auto-generated to display:
 
 Navigate via the left sidebar or the sections below.
 `;
+
+  const simd1 = acceptedSimds.find((s) => s.metadata.simd === "1");
+  if (simd1) {
+    console.log("Using SIMD-1 content as the main README...");
+    // We only use the Markdown body (ignoring the front matter from SIMD-1)
+    mainReadme = simd1.content;
+  } else {
+    console.warn(
+      "SIMD-1 not found among accepted SIMDs. Falling back to the default main README content."
+    );
+  }
+
+  // Write main README
   await fs.writeFile(path.join(OUTPUT_DIR, "README.md"), mainReadme, "utf-8");
 
   // 2. Accepted
@@ -258,7 +273,7 @@ Navigate via the left sidebar or the sections below.
   const proposedRoot = path.join(OUTPUT_DIR, "proposed");
   await fs.mkdir(proposedRoot);
 
-  // IMPORTANT CHANGE: Sort proposed SIMDs by descending SIMD number.
+  // Sort proposed SIMDs by descending SIMD number
   const allProposedSorted = proposedSimds.slice().sort((a, b) => {
     const aNum = parseInt(a.metadata.simd || "0", 10);
     const bNum = parseInt(b.metadata.simd || "0", 10);
@@ -304,7 +319,7 @@ Navigate via the left sidebar or the sections below.
   for (const status of sortedStatuses) {
     summaryLines.push(`  * ${status}`);
     const simds = acceptedByStatus[status];
-    // Sort each status category by SIMD number (ascending as before)
+    // Sort each status category by SIMD number (ascending)
     const sortedSimds = simds.sort((a, b) => {
       const aNum = parseInt(a.metadata.simd || "999999", 10);
       const bNum = parseInt(b.metadata.simd || "999999", 10);
@@ -320,7 +335,7 @@ Navigate via the left sidebar or the sections below.
     }
   }
 
-  // Proposed SIMDs: single list (now in descending order)
+  // Proposed SIMDs: single list (descending order)
   summaryLines.push("## Proposed SIMDs");
   for (const simd of allProposedSorted) {
     const simdNum = simd.metadata.simd || "PR";
