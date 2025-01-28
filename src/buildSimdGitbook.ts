@@ -42,7 +42,7 @@ const CLONE_DIR = path.resolve("local-simd-repo");
 const PROPOSALS_DIR = "proposals";
 const OUTPUT_DIR = path.resolve("docs"); // final GitBook docs output
 
-// Custom sort order for statuses:
+// Custom sort order for statuses (optional)
 const CUSTOM_STATUS_ORDER = [
   "Activated",
   "Implemented",
@@ -228,7 +228,8 @@ Navigate via the left sidebar or the sections below.
   }
 
   // For each status, create a subfolder and place each SIMD as a .md
-  // Also add a 'githubLink' to the metadata pointing to the main-branch file.
+  // Also add a 'githubLink' to the metadata pointing to the main-branch file
+  // Then prepend a link at the top of the Markdown content.
   for (const [status, simds] of Object.entries(acceptedByStatus)) {
     const safeStatus = status.replace(/[^a-zA-Z0-9_-]/g, "_"); // sanitize folder name
     const statusFolder = path.join(acceptedRoot, safeStatus);
@@ -243,8 +244,12 @@ Navigate via the left sidebar or the sections below.
       const mainBranchUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/main/proposals/${simdNum}-anything.md`;
       simd.metadata.githubLink = mainBranchUrl;
 
+      // Insert a link at the top of the file's content
+      const githubLinkLine = `[View on GitHub](${mainBranchUrl})\n\n`;
+      const newContent = githubLinkLine + simd.content;
+
       // Now embed the link in front matter
-      const frontMatter = matter.stringify(simd.content, simd.metadata);
+      const frontMatter = matter.stringify(newContent, simd.metadata);
       await fs.writeFile(fullPath, frontMatter, "utf-8");
     }
   }
@@ -268,9 +273,14 @@ Navigate via the left sidebar or the sections below.
     const fullPath = path.join(proposedRoot, simdFilename);
 
     // Add a 'githubLink' that points to the PR
-    simd.metadata.githubLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${simd.prNumber}`;
+    const prUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${simd.prNumber}`;
+    simd.metadata.githubLink = prUrl;
 
-    const frontMatter = matter.stringify(simd.content, simd.metadata);
+    // Insert a link at the top of the content
+    const githubLinkLine = `[View on GitHub](${prUrl})\n\n`;
+    const newContent = githubLinkLine + simd.content;
+
+    const frontMatter = matter.stringify(newContent, simd.metadata);
     await fs.writeFile(fullPath, frontMatter, "utf-8");
   }
 
@@ -281,21 +291,19 @@ Navigate via the left sidebar or the sections below.
     "## Accepted SIMDs",
   ];
 
-  // Custom sort of statuses using our CUSTOM_STATUS_ORDER
+  // Sort statuses via custom order (optional)
   const sortedStatuses = Object.keys(acceptedByStatus).sort((a, b) => {
     const indexA = CUSTOM_STATUS_ORDER.indexOf(a);
     const indexB = CUSTOM_STATUS_ORDER.indexOf(b);
-    // If not found in the array, push to the end
     const rankA = indexA === -1 ? 9999 : indexA;
     const rankB = indexB === -1 ? 9999 : indexB;
     return rankA - rankB;
   });
 
-  // Now iterate in that custom order
   for (const status of sortedStatuses) {
     summaryLines.push(`  * ${status}`);
     const simds = acceptedByStatus[status];
-    // Sort by SIMD number
+    // Sort each status category by SIMD number
     const sortedSimds = simds.sort((a, b) => {
       const aNum = parseInt(a.metadata.simd || "999999", 10);
       const bNum = parseInt(b.metadata.simd || "999999", 10);
