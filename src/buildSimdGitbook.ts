@@ -258,11 +258,12 @@ Navigate via the left sidebar or the sections below.
   const proposedRoot = path.join(OUTPUT_DIR, "proposed");
   await fs.mkdir(proposedRoot);
 
-  // Flatten proposed: single array, sorted by simdNum
+  // IMPORTANT CHANGE: Sort proposed SIMDs by descending SIMD number.
   const allProposedSorted = proposedSimds.slice().sort((a, b) => {
-    const aNum = parseInt(a.metadata.simd || "999999", 10);
-    const bNum = parseInt(b.metadata.simd || "999999", 10);
-    return aNum - bNum;
+    const aNum = parseInt(a.metadata.simd || "0", 10);
+    const bNum = parseInt(b.metadata.simd || "0", 10);
+    // Descending order
+    return bNum - aNum;
   });
 
   // Write each proposed SIMD
@@ -303,7 +304,7 @@ Navigate via the left sidebar or the sections below.
   for (const status of sortedStatuses) {
     summaryLines.push(`  * ${status}`);
     const simds = acceptedByStatus[status];
-    // Sort each status category by SIMD number
+    // Sort each status category by SIMD number (ascending as before)
     const sortedSimds = simds.sort((a, b) => {
       const aNum = parseInt(a.metadata.simd || "999999", 10);
       const bNum = parseInt(b.metadata.simd || "999999", 10);
@@ -319,7 +320,7 @@ Navigate via the left sidebar or the sections below.
     }
   }
 
-  // Proposed SIMDs: single list
+  // Proposed SIMDs: single list (now in descending order)
   summaryLines.push("## Proposed SIMDs");
   for (const simd of allProposedSorted) {
     const simdNum = simd.metadata.simd || "PR";
