@@ -57,84 +57,44 @@
     * [SIMD-0015 - Partitioned Epoch Rewards Distribution](accepted/Withdrawn/SIMD-0015.md)
     * [SIMD-0048 - Native Program for verifying secp256r1 sig.](accepted/Withdrawn/SIMD-0048.md)
 ## Proposed SIMDs
-  * PR #57
-    * [SIMD-0057 - Events](proposed/PR-57/SIMD-0057.md)
-  * PR #72
-    * [SIMD-0072 - Feature Gate Threshold Automation](proposed/PR-72/SIMD-0072.md)
-  * PR #94
-    * [SIMD-0094 - Deprecate executable update in bpf loader](proposed/PR-94/SIMD-0094.md)
-  * PR #95
-    * [SIMD-0095 - extendable output (XOF) hashing support](proposed/PR-95/SIMD-0095.md)
-  * PR #121
-    * [SIMD-0120 - Guidance on compute cost estimation](proposed/PR-121/SIMD-0120.md)
-  * PR #123
-    * [SIMD-0123 - Block Revenue Sharing](proposed/PR-123/SIMD-0123.md)
-  * PR #125
-    * [SIMD-0125 - Incremental Accounts Hash](proposed/PR-125/SIMD-0125.md)
-  * PR #132
-    * [SIMD-0130 - Dynamic Block Limits](proposed/PR-132/SIMD-0130.md)
-  * PR #160
-    * [SIMD-0160 - Static Instruction Limit](proposed/PR-160/SIMD-0160.md)
-  * PR #161
-    * [SIMD-0161 - SBPF versioning and feature gating](proposed/PR-161/SIMD-0161.md)
-  * PR #165
-    * [SIMD-0165 - Async Vote Execution](proposed/PR-165/SIMD-0165.md)
-  * PR #166
-    * [SIMD-0166 - SBPF Dynamic stack frames](proposed/PR-166/SIMD-0166.md)
-  * PR #167
-    * [SIMD-0167 - Loader-v4](proposed/PR-167/SIMD-0167.md)
-  * PR #171
-    * [SIMD-0118 - Partitioned Epoch Rewards Distribution](proposed/PR-171/SIMD-0118.md)
-  * PR #172
-    * [SIMD-0172 - Reduce default CU per instruction to zero](proposed/PR-172/SIMD-0172.md)
-  * PR #173
-    * [SIMD-0173 - SBPF instruction encoding improvements](proposed/PR-173/SIMD-0173.md)
-  * PR #174
-    * [SIMD-0174 - SBPF arithmetics improvements](proposed/PR-174/SIMD-0174.md)
-  * PR #177
-    * [SIMD-0177 - Program Runtime ABI v2](proposed/PR-177/SIMD-0177.md)
-  * PR #178
-    * [SIMD-0178 - SBPF Static Syscalls](proposed/PR-178/SIMD-0178.md)
-  * PR #179
-    * [SIMD-0179 - SBPF Stricter verification constraints](proposed/PR-179/SIMD-0179.md)
-  * PR #180
-    * [SIMD-0180 - Leader Schedule Migration](proposed/PR-180/SIMD-0180.md)
-  * PR #184
-    * [SIMD-0184 - Block Writeable Account Data Limit](proposed/PR-184/SIMD-0184.md)
-  * PR #185
-    * [SIMD-0185 - Vote Account v4](proposed/PR-185/SIMD-0185.md)
-  * PR #189
-    * [SIMD-0189 - SBPF stricter ELF headers](proposed/PR-189/SIMD-0189.md)
-  * PR #191
-    * [SIMD-0191 - Relax Transaction Loading Constraints](proposed/PR-191/SIMD-0191.md)
-  * PR #192
-    * [SIMD-0192 - Relax Transaction Account Resolution](proposed/PR-192/SIMD-0192.md)
-  * PR #193
-    * [SIMD-0133 - Syscall Get-Epoch-Stake](proposed/PR-193/SIMD-0133.md)
-  * PR #194
-    * [SIMD-0194 - Deprecate Rent Exemption Threshold](proposed/PR-194/SIMD-0194.md)
-  * PR #195
-    * [SIMD-0195 - TPU Vote using QUIC](proposed/PR-195/SIMD-0195.md)
-  * PR #197
-    * [SIMD-0197 - Chili Peppers](proposed/PR-197/SIMD-0197.md)
-  * PR #198
-    * [SIMD-0198 - Define CUs for Builtin instructions](proposed/PR-198/SIMD-0198.md)
-  * PR #201
-    * [SIMD-0201 - Create Cluster Sysvar](proposed/PR-201/SIMD-0201.md)
-  * PR #204
-    * [SIMD-0204 - Slashable event verification](proposed/PR-204/SIMD-0204.md)
-  * PR #212
-    * [SIMD-0212 - Slashing](proposed/PR-212/SIMD-0212.md)
-  * PR #217
-    * [SIMD-0218 - Intermediate vote credits](proposed/PR-217/SIMD-0218.md)
-  * PR #219
-    * [SIMD-0219 - Stricter VM verification constraints](proposed/PR-219/SIMD-0219.md)
-  * PR #230
-    * [SIMD-0175 - Disable Partitioned Rent Updates](proposed/PR-230/SIMD-0175.md)
-  * PR #231
-    * [SIMD-0175 - Disable Partitioned Rent Updates](proposed/PR-231/SIMD-0175.md)
-    * [SIMD-0231 - Disable Account Rent Epoch Updates](proposed/PR-231/SIMD-0231.md)
-  * PR #232
-    * [SIMD-0232 - Custom Fee Collector Account](proposed/PR-232/SIMD-0232.md)
-  * PR #233
-    * [SIMD-0159 - Relax Precompile Failure Constraint](proposed/PR-233/SIMD-0159.md)
+  * [SIMD-0057 - Events](proposed/SIMD-0057-PR57.md)
+  * [SIMD-0072 - Feature Gate Threshold Automation](proposed/SIMD-0072-PR72.md)
+  * [SIMD-0094 - Deprecate executable update in bpf loader](proposed/SIMD-0094-PR94.md)
+  * [SIMD-0095 - extendable output (XOF) hashing support](proposed/SIMD-0095-PR95.md)
+  * [SIMD-0118 - Partitioned Epoch Rewards Distribution](proposed/SIMD-0118-PR171.md)
+  * [SIMD-0120 - Guidance on compute cost estimation](proposed/SIMD-0120-PR121.md)
+  * [SIMD-0123 - Block Revenue Sharing](proposed/SIMD-0123-PR123.md)
+  * [SIMD-0125 - Incremental Accounts Hash](proposed/SIMD-0125-PR125.md)
+  * [SIMD-0130 - Dynamic Block Limits](proposed/SIMD-0130-PR132.md)
+  * [SIMD-0133 - Syscall Get-Epoch-Stake](proposed/SIMD-0133-PR193.md)
+  * [SIMD-0159 - Relax Precompile Failure Constraint](proposed/SIMD-0159-PR233.md)
+  * [SIMD-0160 - Static Instruction Limit](proposed/SIMD-0160-PR160.md)
+  * [SIMD-0161 - SBPF versioning and feature gating](proposed/SIMD-0161-PR161.md)
+  * [SIMD-0165 - Async Vote Execution](proposed/SIMD-0165-PR165.md)
+  * [SIMD-0166 - SBPF Dynamic stack frames](proposed/SIMD-0166-PR166.md)
+  * [SIMD-0167 - Loader-v4](proposed/SIMD-0167-PR167.md)
+  * [SIMD-0172 - Reduce default CU per instruction to zero](proposed/SIMD-0172-PR172.md)
+  * [SIMD-0173 - SBPF instruction encoding improvements](proposed/SIMD-0173-PR173.md)
+  * [SIMD-0174 - SBPF arithmetics improvements](proposed/SIMD-0174-PR174.md)
+  * [SIMD-0175 - Disable Partitioned Rent Updates](proposed/SIMD-0175-PR231.md)
+  * [SIMD-0175 - Disable Partitioned Rent Updates](proposed/SIMD-0175-PR230.md)
+  * [SIMD-0177 - Program Runtime ABI v2](proposed/SIMD-0177-PR177.md)
+  * [SIMD-0178 - SBPF Static Syscalls](proposed/SIMD-0178-PR178.md)
+  * [SIMD-0179 - SBPF Stricter verification constraints](proposed/SIMD-0179-PR179.md)
+  * [SIMD-0180 - Leader Schedule Migration](proposed/SIMD-0180-PR180.md)
+  * [SIMD-0184 - Block Writeable Account Data Limit](proposed/SIMD-0184-PR184.md)
+  * [SIMD-0185 - Vote Account v4](proposed/SIMD-0185-PR185.md)
+  * [SIMD-0189 - SBPF stricter ELF headers](proposed/SIMD-0189-PR189.md)
+  * [SIMD-0191 - Relax Transaction Loading Constraints](proposed/SIMD-0191-PR191.md)
+  * [SIMD-0192 - Relax Transaction Account Resolution](proposed/SIMD-0192-PR192.md)
+  * [SIMD-0194 - Deprecate Rent Exemption Threshold](proposed/SIMD-0194-PR194.md)
+  * [SIMD-0195 - TPU Vote using QUIC](proposed/SIMD-0195-PR195.md)
+  * [SIMD-0197 - Chili Peppers](proposed/SIMD-0197-PR197.md)
+  * [SIMD-0198 - Define CUs for Builtin instructions](proposed/SIMD-0198-PR198.md)
+  * [SIMD-0201 - Create Cluster Sysvar](proposed/SIMD-0201-PR201.md)
+  * [SIMD-0204 - Slashable event verification](proposed/SIMD-0204-PR204.md)
+  * [SIMD-0212 - Slashing](proposed/SIMD-0212-PR212.md)
+  * [SIMD-0218 - Intermediate vote credits](proposed/SIMD-0218-PR217.md)
+  * [SIMD-0219 - Stricter VM verification constraints](proposed/SIMD-0219-PR219.md)
+  * [SIMD-0231 - Disable Account Rent Epoch Updates](proposed/SIMD-0231-PR231.md)
+  * [SIMD-0232 - Custom Fee Collector Account](proposed/SIMD-0232-PR232.md)

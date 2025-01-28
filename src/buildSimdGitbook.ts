@@ -19,6 +19,7 @@ interface SimdMetadata {
   simd?: string;
   title?: string;
   status?: string;
+  githubLink?: string;
   [key: string]: any; // For any other fields
 }
 
@@ -120,57 +121,56 @@ async function getOpenPRs() {
  * For a given PR number, fetch the list of changed files, filter to .md under proposals/.
  */
 async function getChangedFilesForPR(prNumber: number): Promise<ProposedSimdData[]> {
-    const octokit = new Octokit({ auth: GITHUB_TOKEN });
-    const { data } = await octokit.request(
-      "GET /repos/{owner}/{repo}/pulls/{pull_number}/files",
-      {
-        owner: REPO_OWNER,
-        repo: REPO_NAME,
-        pull_number: prNumber,
-        per_page: 100,
-      }
-    );
-  
-    const results: ProposedSimdData[] = [];
-    for (const fileInfo of data) {
-      const filename = fileInfo.filename;
-      if (
-        filename.startsWith(PROPOSALS_DIR) &&
-        filename.endsWith(".md") &&
-        fileInfo.raw_url
-      ) {
-        // Download the raw content
-        const rawContentRes = await fetch(fileInfo.raw_url, {
-          headers: GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {},
-        });
-        const rawContent = await rawContentRes.text();
-  
-        // Use try/catch for gray-matter
-        try {
-          const parsed = matter(rawContent);
-          const metadata = parsed.data as SimdMetadata;
-          const content = parsed.content;
-  
-          const simdData: ProposedSimdData = {
-            prNumber,
-            filePath: filename,
-            metadata,
-            content,
-          };
-          results.push(simdData);
-        } catch (parseErr) {
-          console.warn(
-            `Skipping invalid YAML front matter in PR #${prNumber}, file: ${filename}`,
-            parseErr
-          );
-          // Just skip, don't push to results
-        }
+  const octokit = new Octokit({ auth: GITHUB_TOKEN });
+  const { data } = await octokit.request(
+    "GET /repos/{owner}/{repo}/pulls/{pull_number}/files",
+    {
+      owner: REPO_OWNER,
+      repo: REPO_NAME,
+      pull_number: prNumber,
+      per_page: 100,
+    }
+  );
+
+  const results: ProposedSimdData[] = [];
+  for (const fileInfo of data) {
+    const filename = fileInfo.filename;
+    if (
+      filename.startsWith(PROPOSALS_DIR) &&
+      filename.endsWith(".md") &&
+      fileInfo.raw_url
+    ) {
+      // Download the raw content
+      const rawContentRes = await fetch(fileInfo.raw_url, {
+        headers: GITHUB_TOKEN ? { Authorization: `token ${GITHUB_TOKEN}` } : {},
+      });
+      const rawContent = await rawContentRes.text();
+
+      // Use try/catch for gray-matter
+      try {
+        const parsed = matter(rawContent);
+        const metadata = parsed.data as SimdMetadata;
+        const content = parsed.content;
+
+        const simdData: ProposedSimdData = {
+          prNumber,
+          filePath: filename,
+          metadata,
+          content,
+        };
+        results.push(simdData);
+      } catch (parseErr) {
+        console.warn(
+          `Skipping invalid YAML front matter in PR #${prNumber}, file: ${filename}`,
+          parseErr
+        );
+        // Just skip, don't push to results
       }
     }
-  
-    return results;
   }
-  
+
+  return results;
+}
 
 // ----------------------
 // Build GitBook structure
@@ -216,19 +216,30 @@ Navigate via the left sidebar or the sections below.
   }
 
   // For each status, create a subfolder and place each SIMD as a .md
+  // Also add a 'githubLink' to the metadata pointing to the main-branch file.
   for (const [status, simds] of Object.entries(acceptedByStatus)) {
     const safeStatus = status.replace(/[^a-zA-Z0-9_-]/g, "_"); // sanitize folder name
     const statusFolder = path.join(acceptedRoot, safeStatus);
     await fs.mkdir(statusFolder);
 
     for (const simd of simds) {
+      // Try to infer the original filename from the content or path if needed
+      // but let's assume we do it by matching the simd # with the original file
       const simdNum = simd.metadata.simd || "XXXX";
       const simdFilename = `SIMD-${simdNum}.md`;
       const fullPath = path.join(statusFolder, simdFilename);
 
-      // We can re-include front matter if we want. For a "nice" GitBook page,
-      // sometimes it's nicer to just create a small front matter with minimal data,
-      // but let's show the entire metadata for completeness:
+      // Build GitHub link for the main-branch proposal file
+      // Usually we can't 100% guarantee the original .md name from just the simdNum,
+      // but if your simdNum matches the filename, this works well. 
+      // If your local parse had the EXACT original relative path, use that.
+      const mainBranchUrl = `https://github.com/${REPO_OWNER}/${REPO_NAME}/blob/main/proposals/${simdNum}-anything.md`;
+
+      // If you want a guaranteed approach, store the relative file path earlier,
+      // or parse it from the local read path. We'll do a naive approach here:
+      simd.metadata.githubLink = mainBranchUrl;
+
+      // Now embed the link in front matter
       const frontMatter = matter.stringify(simd.content, simd.metadata);
       await fs.writeFile(fullPath, frontMatter, "utf-8");
     }
@@ -238,30 +249,28 @@ Navigate via the left sidebar or the sections below.
   const proposedRoot = path.join(OUTPUT_DIR, "proposed");
   await fs.mkdir(proposedRoot);
 
-  // Group proposed by PR number
-  const proposalsByPR: Record<number, ProposedSimdData[]> = {};
-  for (const p of proposedSimds) {
-    if (!proposalsByPR[p.prNumber]) {
-      proposalsByPR[p.prNumber] = [];
-    }
-    proposalsByPR[p.prNumber].push(p);
-  }
+  // Instead of subdividing by PR, let's just store them all directly in proposed/
+  // We'll create a single array that is sorted by simdNum to produce a tidy listing.
+  const allProposedSorted = proposedSimds.slice().sort((a, b) => {
+    const aNum = parseInt(a.metadata.simd || "999999", 10);
+    const bNum = parseInt(b.metadata.simd || "999999", 10);
+    return aNum - bNum;
+  });
 
-  for (const [prNumberStr, items] of Object.entries(proposalsByPR)) {
-    const prNumber = parseInt(prNumberStr, 10);
-    const prFolder = path.join(proposedRoot, `PR-${prNumber}`);
-    await fs.mkdir(prFolder);
+  // Write each proposed SIMD as a single file in proposed/
+  for (const simd of allProposedSorted) {
+    const simdNum = simd.metadata.simd || "PR";
+    const simdTitle = simd.metadata.title || "";
+    // We'll incorporate the PR number into the filename to avoid collisions
+    const simdFilename = `SIMD-${simdNum}-PR${simd.prNumber}.md`;
+    const fullPath = path.join(proposedRoot, simdFilename);
 
-    for (const simd of items) {
-      const simdNum = simd.metadata.simd || "PR";
-      const simdTitle = simd.metadata.title || "";
-      const simdFilename = `SIMD-${simdNum}.md`;
-      const fullPath = path.join(prFolder, simdFilename);
+    // Add a 'githubLink' that points to the PR
+    simd.metadata.githubLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/pull/${simd.prNumber}`;
 
-      // Write with front matter again
-      const frontMatter = matter.stringify(simd.content, simd.metadata);
-      await fs.writeFile(fullPath, frontMatter, "utf-8");
-    }
+    // Write with front matter again
+    const frontMatter = matter.stringify(simd.content, simd.metadata);
+    await fs.writeFile(fullPath, frontMatter, "utf-8");
   }
 
   // 4. Create SUMMARY.md for GitBook navigation
@@ -292,21 +301,16 @@ Navigate via the left sidebar or the sections below.
     }
   }
 
+  // Proposed SIMDs: just one flat list
   summaryLines.push("## Proposed SIMDs");
-  const prNumbers = Object.keys(proposalsByPR)
-    .map((num) => parseInt(num, 10))
-    .sort((a, b) => a - b);
-  for (const prNum of prNumbers) {
-    summaryLines.push(`  * PR #${prNum}`);
-    const pSimds = proposalsByPR[prNum];
-    // Just list each file
-    for (const simd of pSimds) {
-      const simdNum = simd.metadata.simd || "PR";
-      const simdTitle = simd.metadata.title || "";
-      summaryLines.push(
-        `    * [SIMD-${simdNum} - ${simdTitle}](proposed/PR-${prNum}/SIMD-${simdNum}.md)`
-      );
-    }
+  for (const simd of allProposedSorted) {
+    const simdNum = simd.metadata.simd || "PR";
+    const simdTitle = simd.metadata.title || "";
+    const prNumber = simd.prNumber;
+    // Filename references the single folder: proposed/SIMD-<simdNum>-PR<prNumber>.md
+    summaryLines.push(
+      `  * [SIMD-${simdNum} - ${simdTitle}](proposed/SIMD-${simdNum}-PR${prNumber}.md)`
+    );
   }
 
   const summaryContent = summaryLines.join("\n");
@@ -327,13 +331,13 @@ async function main() {
     const acceptedSimdFiles = getAcceptedSimdFiles();
     const acceptedSimds: SimdData[] = [];
     for (const file of acceptedSimdFiles) {
-        try {
-            console.log(`Parsing file: ${file}`);
-            const data = parseSimdMarkdown(file);
-            if (data) acceptedSimds.push(data);
-          } catch (err) {
-            console.warn(`Skipping invalid file: ${file}`, err);
-          }
+      try {
+        console.log(`Parsing file: ${file}`);
+        const data = parseSimdMarkdown(file);
+        if (data) acceptedSimds.push(data);
+      } catch (err) {
+        console.warn(`Skipping invalid file: ${file}`, err);
+      }
     }
 
     console.log("3) Fetch open PRs to identify proposed SIMDs...");
