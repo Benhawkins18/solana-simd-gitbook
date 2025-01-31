@@ -56,7 +56,7 @@ const CUSTOM_STATUS_ORDER = [
 
 // Use an environment variable for GitHub token (recommended) or hardcode for demo
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || "";
-
+console.log("GITHUB_TOKEN", GITHUB_TOKEN);
 // GitHub repo HTTPS URL
 const REPO_URL = `https://github.com/${REPO_OWNER}/${REPO_NAME}.git`;
 

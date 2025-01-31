@@ -6,6 +6,7 @@
     * [SIMD-0085 - Additional Fee-Collector Constraints](accepted/Activated/SIMD-0085.md)
     * [SIMD-0093 - Disable Bpf loader V2 program deployment](accepted/Activated/SIMD-0093.md)
     * [SIMD-0129 - Alt_BN128 Syscalls - Simplified Error Code](accepted/Activated/SIMD-0129.md)
+    * [SIMD-0148 - MoveStake and MoveLamports Instructions](accepted/Activated/SIMD-0148.md)
   * Implemented
     * [SIMD-0046 - Optimistic cluster restart automation](accepted/Implemented/SIMD-0046.md)
     * [SIMD-0047 - Syscall and Sysvar for last restart slot](accepted/Implemented/SIMD-0047.md)
@@ -14,7 +15,10 @@
     * [SIMD-0084 - Disable rent fees collection](accepted/Implemented/SIMD-0084.md)
     * [SIMD-0096 - Reward full priority fee to validator](accepted/Implemented/SIMD-0096.md)
     * [SIMD-0133 - Syscall Get-Epoch-Stake](accepted/Implemented/SIMD-0133.md)
-    * [SIMD-0148 - MoveStake and MoveLamports Instructions](accepted/Implemented/SIMD-0148.md)
+    * [SIMD-0170 - Reserve minimal CUs for builtins](accepted/Implemented/SIMD-0170.md)
+    * [SIMD-0182 - Consume requested CUs for sBPF failures](accepted/Implemented/SIMD-0182.md)
+    * [SIMD-0196 - Migrate Stake to Core BPF](accepted/Implemented/SIMD-0196.md)
+    * [SIMD-0222 - Fix alt-bn128 multiplication syscall length](accepted/Implemented/SIMD-0222.md)
   * Accepted
     * [SIMD-0009 - Lockout Violation Detection](accepted/Accepted/SIMD-0009.md)
     * [SIMD-0022 - Multi Delegation Stake Account](accepted/Accepted/SIMD-0022.md)
@@ -32,12 +36,15 @@
     * [SIMD-0149 - Migrate Snapshot Serialized Epoch Stakes](accepted/Accepted/SIMD-0149.md)
     * [SIMD-0152 - Precompiles](accepted/Accepted/SIMD-0152.md)
     * [SIMD-0153 - ZK ElGamal Proof Program](accepted/Accepted/SIMD-0153.md)
+    * [SIMD-0159 - Relax Precompile Failure Constraint](accepted/Accepted/SIMD-0159.md)
     * [SIMD-0162 - Remove Accounts `is_executable` Flag Checks](accepted/Accepted/SIMD-0162.md)
     * [SIMD-0163 - Lift the CPI caller restriction](accepted/Accepted/SIMD-0163.md)
     * [SIMD-0175 - Disable Partitioned Rent Updates](accepted/Accepted/SIMD-0175.md)
     * [SIMD-0183 - Skip Rent Rewrites](accepted/Accepted/SIMD-0183.md)
+    * [SIMD-0186 - Loaded Transaction Data Size Specification](accepted/Accepted/SIMD-0186.md)
     * [SIMD-0207 - Raise Block Limits to 50M CUs](accepted/Accepted/SIMD-0207.md)
     * [SIMD-0215 - Homomorphic Hashing of Account State](accepted/Accepted/SIMD-0215.md)
+    * [SIMD-0220 - Snapshots use Accounts Lattice Hash](accepted/Accepted/SIMD-0220.md)
     * [SIMD-0223 - Removes Accounts Delta Hash](accepted/Accepted/SIMD-0223.md)
   * Living
     * [SIMD-0001 - Solana Proposal Process](accepted/Living/SIMD-0001.md)
@@ -47,18 +54,10 @@
   * Withdrawn
     * [SIMD-0015 - Partitioned Epoch Rewards Distribution](accepted/Withdrawn/SIMD-0015.md)
     * [SIMD-0048 - Native Program for verifying secp256r1 sig.](accepted/Withdrawn/SIMD-0048.md)
-  * Review
-    * [SIMD-0170 - Reserve minimal CUs for builtins](accepted/Review/SIMD-0170.md)
-    * [SIMD-0182 - Consume requested CUs for sBPF failures](accepted/Review/SIMD-0182.md)
-    * [SIMD-0186 - Loaded Transaction Data Size Specification](accepted/Review/SIMD-0186.md)
-    * [SIMD-0196 - Migrate Stake to Core BPF](accepted/Review/SIMD-0196.md)
-    * [SIMD-0220 - Snapshots use Accounts Lattice Hash](accepted/Review/SIMD-0220.md)
-    * [SIMD-0222 - Fix alt-bn128 multiplication syscall length](accepted/Review/SIMD-0222.md)
-  * Draft
-    * [SIMD-0159 - Relax Precompile Failure Constraint](accepted/Draft/SIMD-0159.md)
 ## Proposed SIMDs
   * [SIMD-0232 - Custom Fee Collector Account](proposed/SIMD-0232-PR232.md)
   * [SIMD-0231 - Disable Account Rent Epoch Updates](proposed/SIMD-0231-PR231.md)
+  * [SIMD-0228 - Market-Based Emission Mechanism](proposed/SIMD-0228-PR228.md)
   * [SIMD-0219 - Stricter VM verification constraints](proposed/SIMD-0219-PR219.md)
   * [SIMD-0218 - Intermediate vote credits](proposed/SIMD-0218-PR217.md)
   * [SIMD-0212 - Slashing](proposed/SIMD-0212-PR212.md)
@@ -87,7 +86,6 @@
   * [SIMD-0165 - Async Vote Execution](proposed/SIMD-0165-PR165.md)
   * [SIMD-0161 - SBPF versioning and feature gating](proposed/SIMD-0161-PR161.md)
   * [SIMD-0160 - Static Instruction Limit](proposed/SIMD-0160-PR160.md)
-  * [SIMD-0159 - Relax Precompile Failure Constraint](proposed/SIMD-0159-PR233.md)
   * [SIMD-0133 - Syscall Get-Epoch-Stake](proposed/SIMD-0133-PR193.md)
   * [SIMD-0130 - Dynamic Block Limits](proposed/SIMD-0130-PR132.md)
   * [SIMD-0125 - Incremental Accounts Hash](proposed/SIMD-0125-PR125.md)
